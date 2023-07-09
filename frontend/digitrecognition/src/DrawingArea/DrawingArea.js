@@ -86,12 +86,9 @@ export const DrawingArea = ({ x, y, width, height }) => {
         const svgData = new XMLSerializer().serializeToString(svgElement);
         const dataURL = `data:image/svg+xml;base64,${btoa(svgData)}`; // Capture the drawn image as a data URL    
 
-        console.log(dataURL);
-        debugger
-
         try {
             const response = await axios.post('http://localhost:5000/api/process-image', { image: dataURL });
-            console.log(response);
+            console.log(response.data);
         }
         catch (e) {
             console.error(e);

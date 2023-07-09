@@ -1,10 +1,10 @@
 import os 
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 import tensorflow as tf
 from flask import Flask, request
 from flask_cors import CORS
+import base64
 
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ CORS(app)
 
 @app.route('/api/process-image', methods=['POST'])
 def process_image():
-    image_data = request.json['image']
+
     # Importing the data for tf.keras
     mnist = tf.keras.datasets.mnist
 
@@ -49,21 +49,29 @@ def process_image():
     # loss, accuracy = model.evaluate(X_test, t_test)
     # print(loss, accuracy) # loss=0.087, accuracy=97%
 
-    image_number = 1
-    while os.path.isfile(f'digit-samples/digit_{image_number}.png'):  # Path to the imgs
-        try:
-            img = cv2.imread(f'digit-samples/digit_{image_number}.png')[:, :, 0]
-            img = np.invert(np.array([img]))
-            predictions = model.predict(img)
-            prediction = np.argmax(predictions)
-            print(f'This digit is {prediction}')
-            plt.imshow(img[0], cmap=plt.cm.binary)
-            plt.show()
-        except:
-            print('Error! Img may not be the correct resolution')
-        finally: 
-            image_number += 1
-    return {'result': 'success'}
+    try:
+        image_data = request.json['image']
+        print("IMAGE_DATA", image_data)
+        encoded_data = image_data.split(',')[1]
+        print("ENCODED_DATA", encoded_data)
+        image_bytes = base64.b64decode(encoded_data)
+        print("IMAGE_BYTES", image_data)
+        image = np.frombuffer(image_bytes, np.uint8)
+        print("IMAGE IS:", image)
+        img = np.invert(np.array([image]))
+        print("IMG IS:", img)
+
+        predictions = model.predict(img)
+
+       # prediction = np.argmax(predictions)
+       # print(f'This digit is {prediction}')
+    except Exception as e:
+        print("ERROR", e)
+        print('ERROR! IMG MAY NOT BE THE CORRECT RESOLUTION')
+        image = None 
+    
+    return {"Res": "suic"}
+
 
 
 if __name__ == '__main__':
