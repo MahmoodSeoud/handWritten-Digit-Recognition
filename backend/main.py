@@ -2,18 +2,9 @@ import os
 import cv2
 import numpy as np
 import tensorflow as tf
-from flask import Flask, request
-from flask_cors import CORS
-import base64
+import gradio as gr
 
-
-app = Flask(__name__)
-CORS(app)
-
-
-@app.route('/api/process-image', methods=['POST'])
-def process_image():
-
+def train_model():  
     # Importing the data for tf.keras
     mnist = tf.keras.datasets.mnist
 
@@ -24,55 +15,44 @@ def process_image():
     X_train = tf.keras.utils.normalize(X_train, axis= 1)
     X_test = tf.keras.utils.normalize(X_test, axis= 1)
 
-
     # defining the model
-    # model = tf.keras.models.Sequential()
-    # model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
-    # model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
-    # model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
-    # model.add(tf.keras.layers.Dense(10, activation=tf.nn.softmax))
-    # 
-    # model.compile(optimizer='adam',
-    #               loss='sparse_categorical_crossentropy', 
-    #               metrics=['accuracy'])
-    # 
-    # # fitting the data. epochs is how many times the model sees the same data.
-    # model.fit(X_train, t_train, epochs=3)
-    # 
-    # # Saving the model, so that we do not have to fit it again.
-    # model.save('handwritten.model') 
-    # 
-    # 
+    model = tf.keras.models.Sequential()
+    model.add(tf.keras.layers.Flatten(input_shape=(28, 28)))
+    model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+    model.add(tf.keras.layers.Dense(128, activation=tf.nn.relu))
+    model.add(tf.keras.layers.Dense(10, activation=tf.nn.softmax))
+
+    model.compile(optimizer='adam',
+                  loss='sparse_categorical_crossentropy', 
+                  metrics=['accuracy'])
+
+    #    fitting the data. epochs is how many times the model sees the same data.
+    model.fit(X_train, t_train, epochs=10)
+
+    # Saving the model, so that we do not have to fit it again.
+    model.save('handwritten.model') 
+
+ 
+
+
+def sketch_recognition(img):
+
     model = tf.keras.models.load_model('handwritten.model')
     # 
     # # Computing loss and accuraccy
     # loss, accuracy = model.evaluate(X_test, t_test)
     # print(loss, accuracy) # loss=0.087, accuracy=97%
 
-    try:
-        image_data = request.json['image']
-        print("IMAGE_DATA", image_data)
-        encoded_data = image_data.split(',')[1]
-        print("ENCODED_DATA", encoded_data)
-        image_bytes = base64.b64decode(encoded_data)
-        print("IMAGE_BYTES", image_data)
-        image = np.frombuffer(image_bytes, np.uint8)
-        print("IMAGE IS:", image)
-        img = np.invert(np.array([image]))
-        print("IMG IS:", img)
-
-        predictions = model.predict(img)
-
-       # prediction = np.argmax(predictions)
-       # print(f'This digit is {prediction}')
-    except Exception as e:
-        print("ERROR", e)
-        print('ERROR! IMG MAY NOT BE THE CORRECT RESOLUTION')
-        image = None 
-    
-    return {"Res": "suic"}
+    img_3d = img.reshape(-1, 28, 28)
+    img_norm = tf.keras.utils.normalize(img_3d, axis= 1)
+    predictions = model.predict(img_norm)
+    prediction = np.argmax(predictions)
+    print(f'This digit is {prediction}')
+    return (f'The digit is probably {prediction}')
 
 
+demo = gr.Interface(fn=sketch_recognition, inputs="sketchpad", outputs="label")
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+
+if __name__ == "__main__":
+    demo.launch(share=True, debug='True')    
