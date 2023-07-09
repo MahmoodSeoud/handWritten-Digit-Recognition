@@ -1,1 +1,5 @@
-./backend/vscode
+./backend/.vscode
+./backend/__pycache__
+./backend/digit-samples
+./backend/flagged
+./backend/handwritten.model
