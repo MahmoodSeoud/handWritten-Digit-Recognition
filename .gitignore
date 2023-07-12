@@ -1,5 +1,5 @@
-./backend/.vscode
-./backend/__pycache__
-./backend/digit-samples
-./backend/flagged
-./backend/handwritten.model
+.vscode
+__pycache__
+digit-samples
+flagged
+handwritten.model
