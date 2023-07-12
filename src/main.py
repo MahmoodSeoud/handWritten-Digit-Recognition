@@ -27,14 +27,14 @@ footer {visibility: hidden;}
 .gradio-container {background-color: #101820FF;}
 .wrap {background-color: #101820FF;}
 button#component-8 {background: #FEE715FF; border-color: #101820FF; color: #101820FF;}
-button#component-11 {background: #FEE715FF; border-color: #101820FF; color: #101820FF;}
 button#component-7 {background: #101820FF; border-color: #FEE715FF; color: #FEE715FF;}
 """
 
 demo = gr.Interface(fn=sketch_recognition, 
                     inputs="sketchpad",
                       outputs="label",
-                      css=css
+                      css=css,
+                      allow_flagging="never"
                    )
 
 
