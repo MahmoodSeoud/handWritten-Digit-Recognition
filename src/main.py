@@ -2,12 +2,13 @@ import numpy as np
 import tensorflow as tf
 import gradio as gr
 
-from train import X_test, t_test
+from train import Digit_recognizer
 
 def sketch_recognition(img):
 
     model = tf.keras.models.load_model('handwritten.model')
      
+    (_,_), (X_test, t_test) = Digit_recognizer.load_data()
     # Computing loss and accuraccy
     loss, accuracy = model.evaluate(X_test, t_test)
     # print(loss, accuracy) # loss=0.087, accuracy=97%
