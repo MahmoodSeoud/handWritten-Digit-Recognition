@@ -19,7 +19,10 @@ The motivation behind this project is to showcase the capabilities of machine le
 ## How to Use
 1. Ensure that the necessary dependencies are installed. You can check the `requirements.txt` file for details.
 2. Run the provided Python script to launch the interface.
-3. The interface will open in a new window or tab in your default web browser.
+    ```BASH
+    python3 main.py
+    ```
+3. The app will open a port on your localhost. See the terminal for more information.
 4. Use the sketchpad to draw a digit.
 5. The model will process the sketch and display the predicted digit along with the confidence level.
 
@@ -33,9 +36,6 @@ You can install the dependencies using the following command:
 ```BASH
 pip install -r requirements.txt
 ```
-
-## Additional Information
-To further customize the appearance of the interface, the CSS styles have been modified. The changes include a dark background color and customized button styles.
 
 ## Future Improvements
 This project can be extended and improved in several ways, including:
