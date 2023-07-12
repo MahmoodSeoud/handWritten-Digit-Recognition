@@ -20,7 +20,7 @@ The motivation behind this project is to showcase the capabilities of machine le
 1. Ensure that the necessary dependencies are installed. You can check the `requirements.txt` file for details.
 2. Run the provided Python script to launch the interface.
     ```BASH
-    python3 main.py
+    python3 ./src/main.py
     ```
 3. The app will open a port on your localhost. See the terminal for more information.
 4. Use the sketchpad to draw a digit.

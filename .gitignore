@@ -1,3 +1,4 @@
-/src/.vscode
-/src/__pycache__
-/src/handwritten.model
+.vscode
+src/.vscode
+src/__pycache__
+src/handwritten.model
