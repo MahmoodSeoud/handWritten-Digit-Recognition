@@ -24,7 +24,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 #    fitting the data. epochs is how many times the model sees the same data.
-model.fit(X_train, t_train, epochs=10)
+model.fit(X_train, t_train, epochs=3)
 
 # Saving the model, so that we do not have to fit it again.
 model.save('handwritten.model') 

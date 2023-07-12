@@ -20,13 +20,21 @@ def sketch_recognition(img):
     # Getting the number with the highest value
     prediction = np.argmax(predictions)
     
-    return (f'I am {round(accuracy*100)}% sure that the digit is a {prediction}.')
+    return (f'I am {round(accuracy*100)}% sure that the digit is {prediction}.')
 
+css = """
+footer {visibility: hidden;}
+.gradio-container {background-color: #101820FF;}
+.wrap {background-color: #101820FF;}
+button#component-8 {background: #FEE715FF; border-color: #101820FF; color: #101820FF;}
+button#component-11 {background: #FEE715FF; border-color: #101820FF; color: #101820FF;}
+button#component-7 {background: #101820FF; border-color: #FEE715FF; color: #FEE715FF;}
+"""
 
 demo = gr.Interface(fn=sketch_recognition, 
                     inputs="sketchpad",
                       outputs="label",
-                      css="footer {visibility: hidden}"
+                      css=css
                    )
 
 
